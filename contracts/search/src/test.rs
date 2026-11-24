@@ -228,7 +228,7 @@ fn invalid_page_size_is_rejected() {
 }
 
 #[test]
-fn inverted_price_range_is_rejected() {
+fn inverted_price_range_returns_actionable_error() {
     let env = Env::default();
     let (client, _admin) = setup(&env);
     let mut filters = empty_filters(&env);
@@ -236,6 +236,11 @@ fn inverted_price_range_is_rejected() {
     filters.max_price = Some(50);
     let result = client.try_search(&filters, &SortBy::Newest, &0, &10);
     assert_eq!(result, Err(Ok(SearchError::InvalidPriceRange)));
+    assert_eq!(
+        errors::get_suggestion(SearchError::InvalidPriceRange),
+        symbol_short!("BAD_RANGE")
+    );
+    assert_eq!(client.get_analytics().total_searches, 0);
 }
 
 #[test]

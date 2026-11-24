@@ -28,7 +28,10 @@ impl core::fmt::Display for SearchError {
             Self::TooManySkills => write!(f, "too many skill tags"),
             Self::TooManyKeywords => write!(f, "too many keyword tags"),
             Self::InvalidPageSize => write!(f, "page size out of range"),
-            Self::InvalidPriceRange => write!(f, "min_price must not exceed max_price"),
+            Self::InvalidPriceRange => write!(
+                f,
+                "invalid price range: set min_price to a value less than or equal to max_price"
+            ),
         }
     }
 }
